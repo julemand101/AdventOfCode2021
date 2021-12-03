@@ -54,37 +54,24 @@ int calculateRating(
   var list = input;
 
   for (var bit = 0; bit < numberOfBitsInRow && list.length > 1; bit++) {
-    final split = SplitByBit(list, checkBit: bit);
+    final List<String> zeroBitList = [];
+    final List<String> oneBitList = [];
 
-    if (keepOneBitList(split.zeroBitList.length, split.oneBitList.length)) {
-      list = split.oneBitList;
-    } else {
-      list = split.zeroBitList;
-    }
-  }
-
-  return int.parse(list.first, radix: 2);
-}
-
-class SplitByBit {
-  final List<String> zeroBitList;
-  final List<String> oneBitList;
-
-  factory SplitByBit(List<String> input, {required int checkBit}) {
-    final zeroBitList = <String>[];
-    final oneBitList = <String>[];
-
-    for (final line in input) {
+    for (final line in list) {
       // 49 = ASCII value for the char "1"
-      if (line.codeUnits[checkBit] == 49) {
+      if (line.codeUnits[bit] == 49) {
         oneBitList.add(line);
       } else {
         zeroBitList.add(line);
       }
     }
 
-    return SplitByBit._(zeroBitList, oneBitList);
+    if (keepOneBitList(zeroBitList.length, oneBitList.length)) {
+      list = oneBitList;
+    } else {
+      list = zeroBitList;
+    }
   }
 
-  const SplitByBit._(this.zeroBitList, this.oneBitList);
+  return int.parse(list.first, radix: 2);
 }
