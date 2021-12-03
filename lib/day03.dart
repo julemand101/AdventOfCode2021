@@ -37,8 +37,8 @@ int solveA(List<String> input) {
 }
 
 int solveB(List<String> input) =>
-    calculateRating(input: input, keepOneBitList: oxygenGeneratorRatingRule) *
-    calculateRating(input: input, keepOneBitList: co2ScrubberRatingRule);
+    calculateRating(input, keepOneBitList: oxygenGeneratorRatingRule) *
+    calculateRating(input, keepOneBitList: co2ScrubberRatingRule);
 
 bool oxygenGeneratorRatingRule(int zeroBitLength, int oneBitLength) =>
     oneBitLength >= zeroBitLength;
@@ -46,8 +46,8 @@ bool oxygenGeneratorRatingRule(int zeroBitLength, int oneBitLength) =>
 bool co2ScrubberRatingRule(int zeroBitLength, int oneBitLength) =>
     oneBitLength < zeroBitLength;
 
-int calculateRating({
-  required List<String> input,
+int calculateRating(
+  List<String> input, {
   required bool Function(int zeroBitLength, int oneBitLength) keepOneBitList,
 }) {
   final numberOfBitsInRow = input.first.length;
