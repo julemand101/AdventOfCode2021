@@ -35,3 +35,56 @@ int solveA(List<String> input) {
 
   return gammaRate * epsilonRate;
 }
+
+int solveB(List<String> input) =>
+    calculateRating(input: input, keepOneBitList: oxygenGeneratorRatingRule) *
+    calculateRating(input: input, keepOneBitList: co2ScrubberRatingRule);
+
+bool oxygenGeneratorRatingRule(int zeroBitLength, int oneBitLength) =>
+    oneBitLength >= zeroBitLength;
+
+bool co2ScrubberRatingRule(int zeroBitLength, int oneBitLength) =>
+    oneBitLength < zeroBitLength;
+
+int calculateRating({
+  required List<String> input,
+  required bool Function(int zeroBitLength, int oneBitLength) keepOneBitList,
+}) {
+  final numberOfBitsInRow = input.first.length;
+  var list = input;
+
+  for (var bit = 0; bit < numberOfBitsInRow && list.length > 1; bit++) {
+    final split = SplitByBit(list, checkBit: bit);
+
+    if (keepOneBitList(split.zeroBitList.length, split.oneBitList.length)) {
+      list = split.oneBitList;
+    } else {
+      list = split.zeroBitList;
+    }
+  }
+
+  return int.parse(list.first, radix: 2);
+}
+
+class SplitByBit {
+  final List<String> zeroBitList;
+  final List<String> oneBitList;
+
+  factory SplitByBit(List<String> input, {required int checkBit}) {
+    final zeroBitList = <String>[];
+    final oneBitList = <String>[];
+
+    for (final line in input) {
+      // 49 = ASCII value for the char "1"
+      if (line.codeUnits[checkBit] == 49) {
+        oneBitList.add(line);
+      } else {
+        zeroBitList.add(line);
+      }
+    }
+
+    return SplitByBit._(zeroBitList, oneBitList);
+  }
+
+  const SplitByBit._(this.zeroBitList, this.oneBitList);
+}
