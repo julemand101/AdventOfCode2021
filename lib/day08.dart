@@ -3,11 +3,5 @@
 
 int solveA(Iterable<String> input) => input
     .expand((line) => line.split(' | ').last.split(' '))
-    .where(
-      (part) =>
-          part.length == 2 ||
-          part.length == 4 ||
-          part.length == 3 ||
-          part.length == 7,
-    )
+    .where((part) => part.length != 5 && part.length != 6)
     .length;
