@@ -24,4 +24,20 @@ void main() {
       expect(solveA(input), equals(631));
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(
+          solveB(const [
+            '2199943210',
+            '3987894921',
+            '9856789892',
+            '8767896789',
+            '9899965678',
+          ]),
+          equals(1134));
+    });
+    test('Solution', () {
+      expect(solveB(input), equals(821560));
+    });
+  });
 }
