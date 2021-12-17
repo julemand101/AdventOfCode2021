@@ -3,109 +3,104 @@
 
 import 'dart:typed_data';
 
-int solveA(Iterable<String> input) {
+int solveA(Iterable<String> input) =>
+    solve(input, unlimitedSteps: false).sumOfFlashes;
+
+int solveB(Iterable<String> input) =>
+    solve(input, unlimitedSteps: true).stepsUntilSync;
+
+Result solve(Iterable<String> input, {required bool unlimitedSteps}) {
   final grid = Grid(10, 10)
     ..setAll(input.expand((line) => line.split('')).map(int.parse));
-  var sumFlashes = 0;
+  var sumOfFlashes = 0;
 
-  for (var step = 1; step <= 100; step++) {
+  for (var step = 1; unlimitedSteps || step <= 100; step++) {
     // First, the energy level of each octopus increases by 1.
     grid.increaseAll();
 
-    final Set<int> flashCache = {};
+    // Then, any octopus with an energy level greater than 9 flashes. This
+    // increases the energy level of all adjacent octopuses by 1, including
+    // octopuses that are diagonally adjacent. If this causes an octopus to
+    // have an energy level greater than 9, it also flashes. This process
+    // continues as long as new octopuses keep having their energy level
+    // increased beyond 9. (An octopus can only flash at most once per step.)
+    final Set<int> flashedIndexes = {};
     bool anyFlashes;
 
     do {
       anyFlashes = false;
-      for (var y = 0; y < 10; y++) {
-        for (var x = 0; x < 10; x++) {
-          if (grid.get(x, y) > 9 && flashCache.add(grid.getListIndex(x, y))) {
+      for (var y = 0; y < grid.ySize; y++) {
+        for (var x = 0; x < grid.xSize; x++) {
+          if (grid.get(x, y) > 9 &&
+              flashedIndexes.add(grid.listIndexOf(x, y))) {
             grid.increaseAdjacentValues(x, y);
-            sumFlashes++;
             anyFlashes = true;
+            sumOfFlashes++;
           }
         }
       }
     } while (anyFlashes);
 
-    for (final index in flashCache) {
-      grid._list[index] = 0;
+    // In part B, we want to stop if all positions in the grid ends up flashing.
+    // We therefore check if the number of flashed points is the same as the
+    // number of all elements in the grid.
+    if (flashedIndexes.length == grid.list.length) {
+      return Result(step, sumOfFlashes);
+    }
+
+    // Finally, any octopus that flashed during this step has its energy level
+    // set to 0, as it used all of its energy to flash.
+    for (final index in flashedIndexes) {
+      grid.list[index] = 0;
     }
   }
 
-  return sumFlashes;
+  return Result(100, sumOfFlashes);
 }
 
-int solveB(Iterable<String> input) {
-  final grid = Grid(10, 10)
-    ..setAll(input.expand((line) => line.split('')).map(int.parse));
+class Result {
+  final int stepsUntilSync;
+  final int sumOfFlashes;
 
-  // ignore: literal_only_boolean_expressions
-  for (var step = 1; true; step++) {
-    // First, the energy level of each octopus increases by 1.
-    grid.increaseAll();
-
-    final Set<int> flashCache = {};
-    bool anyFlashes;
-
-    do {
-      anyFlashes = false;
-      for (var y = 0; y < 10; y++) {
-        for (var x = 0; x < 10; x++) {
-          if (grid.get(x, y) > 9 && flashCache.add(grid.getListIndex(x, y))) {
-            grid.increaseAdjacentValues(x, y);
-            anyFlashes = true;
-          }
-        }
-      }
-    } while (anyFlashes);
-
-    if (flashCache.length == grid._list.length) {
-      return step;
-    }
-
-    for (final index in flashCache) {
-      grid._list[index] = 0;
-    }
-  }
+  Result(this.stepsUntilSync, this.sumOfFlashes);
 }
 
 class Grid {
   final int xSize;
   final int ySize;
-  final Uint8List _list;
+  final Uint8List list;
 
-  Grid(this.xSize, this.ySize) : _list = Uint8List(xSize * ySize);
+  Grid(this.xSize, this.ySize) : list = Uint8List(xSize * ySize);
 
-  int get(int x, int y) => _list[getListIndex(x, y)];
-  int getListIndex(int x, int y) => x + (y * xSize);
+  int get(int x, int y) => list[listIndexOf(x, y)];
+  int listIndexOf(int x, int y) => x + (y * xSize);
 
-  void set(int x, int y, int value) => _list[getListIndex(x, y)] = value;
-  void setAll(Iterable<int> values) => _list.setAll(0, values);
+  void set(int x, int y, int value) => list[listIndexOf(x, y)] = value;
+  void setAll(Iterable<int> values) => list.setAll(0, values);
 
   bool isValidCoordinate(int x, int y) =>
       x >= 0 && y >= 0 && x < xSize && y < ySize;
 
-  void increaseIgnoreInvalidCoordinate(int x, int y) {
+  void increaseAndIgnoreInvalidCoordinate(int x, int y) {
     if (isValidCoordinate(x, y)) {
-      _list[getListIndex(x, y)]++;
+      list[listIndexOf(x, y)]++;
     }
   }
 
   void increaseAdjacentValues(int x, int y) {
-    increaseIgnoreInvalidCoordinate(x - 1, y - 1); // Up-Left
-    increaseIgnoreInvalidCoordinate(x, y - 1); //     Up
-    increaseIgnoreInvalidCoordinate(x + 1, y - 1); // Up-Right
-    increaseIgnoreInvalidCoordinate(x - 1, y); //     Left
-    increaseIgnoreInvalidCoordinate(x + 1, y); //     Right
-    increaseIgnoreInvalidCoordinate(x - 1, y + 1); // Down-Left
-    increaseIgnoreInvalidCoordinate(x, y + 1); // Down
-    increaseIgnoreInvalidCoordinate(x + 1, y + 1); // Down-Right
+    increaseAndIgnoreInvalidCoordinate(x - 1, y - 1); // Up-Left
+    increaseAndIgnoreInvalidCoordinate(x, y - 1); //     Up
+    increaseAndIgnoreInvalidCoordinate(x + 1, y - 1); // Up-Right
+    increaseAndIgnoreInvalidCoordinate(x - 1, y); //     Left
+    increaseAndIgnoreInvalidCoordinate(x + 1, y); //     Right
+    increaseAndIgnoreInvalidCoordinate(x - 1, y + 1); // Down-Left
+    increaseAndIgnoreInvalidCoordinate(x, y + 1); //     Down
+    increaseAndIgnoreInvalidCoordinate(x + 1, y + 1); // Down-Right
   }
 
   void increaseAll() {
-    for (var i = 0; i < _list.length; i++) {
-      _list[i]++;
+    for (var i = 0; i < list.length; i++) {
+      list[i]++;
     }
   }
 
