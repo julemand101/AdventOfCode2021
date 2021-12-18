@@ -46,32 +46,20 @@ class Node {
   final List<Node> neighbours = [];
   final bool isSmallCave;
   bool allowSecondVisit = false;
-  bool visitedBefore = false;
+  int visits = 0;
 
   Node(this.name) : isSmallCave = name.toLowerCase() == name;
 
   Iterable<String> getPathsToEnd(
       List<Node> currentRoute, Set<Node> previouslyVisitedSmallCaves) sync* {
     currentRoute.add(this);
-
-    bool crapA = false;
-    bool crapB = false;
+    visits++;
 
     if (name == 'end') {
       yield currentRoute.map((e) => e.name).join(',');
     } else {
-      if (isSmallCave) {
-        if (allowSecondVisit) {
-          if (visitedBefore) {
-            crapA = true;
-            previouslyVisitedSmallCaves.add(this);
-          } else {
-            crapB = true;
-            visitedBefore = true;
-          }
-        } else {
-          previouslyVisitedSmallCaves.add(this);
-        }
+      if (isSmallCave && (!allowSecondVisit || visits > 1)) {
+        previouslyVisitedSmallCaves.add(this);
       }
 
       for (final neighbour in neighbours.where(
@@ -80,21 +68,12 @@ class Node {
             currentRoute, previouslyVisitedSmallCaves);
       }
 
-      if (isSmallCave) {
-        if (allowSecondVisit) {
-          if (crapA) {
-            previouslyVisitedSmallCaves.remove(this);
-          }
-
-          if (crapB) {
-            visitedBefore = false;
-          }
-        } else {
-          previouslyVisitedSmallCaves.remove(this);
-        }
+      if (isSmallCave && (!allowSecondVisit || visits > 1)) {
+        previouslyVisitedSmallCaves.remove(this);
       }
     }
 
+    visits--;
     currentRoute.removeLast();
   }
 }
