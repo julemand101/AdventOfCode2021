@@ -13,7 +13,7 @@ int solveA(Iterable<String> input) {
     nodeB.neighbours.add(nodeA);
   }
 
-  return nodeMap['start']!.countPathsToEnd({});
+  return nodeMap['start']!.getPathsToEnd([], {}).length;
 }
 
 int solveB(Iterable<String> input) {
@@ -28,20 +28,17 @@ int solveB(Iterable<String> input) {
     nodeB.neighbours.add(nodeA);
   }
 
-  var sum = 0;
+  final routes = <String>{};
 
   for (final smallCave in nodeMap.values
       .where((node) => node.isSmallCave)
       .where((node) => node.name != 'start' && node.name != 'end')) {
-    print(sum);
     smallCave.allowSecondVisit = true;
-    sum += nodeMap['start']!.countPathsToEnd({});
+    routes.addAll(nodeMap['start']!.getPathsToEnd([], {}));
     smallCave.allowSecondVisit = false;
-
-    nodeMap.values.forEach((node) => node.visitedBefore = false);
   }
 
-  return sum;
+  return routes.length;
 }
 
 class Node {
@@ -53,35 +50,52 @@ class Node {
 
   Node(this.name) : isSmallCave = name.toLowerCase() == name;
 
-  int countPathsToEnd(Set<Node> previouslyVisitedSmallCaves) {
-    if (name == 'end') {
-      return 1;
-    }
+  Iterable<String> getPathsToEnd(
+      List<Node> currentRoute, Set<Node> previouslyVisitedSmallCaves) sync* {
+    currentRoute.add(this);
 
-    if (isSmallCave) {
-      if (allowSecondVisit) {
-        if (visitedBefore) {
-          previouslyVisitedSmallCaves.add(this);
+    bool crapA = false;
+    bool crapB = false;
+
+    if (name == 'end') {
+      yield currentRoute.map((e) => e.name).join(',');
+    } else {
+      if (isSmallCave) {
+        if (allowSecondVisit) {
+          if (visitedBefore) {
+            crapA = true;
+            previouslyVisitedSmallCaves.add(this);
+          } else {
+            crapB = true;
+            visitedBefore = true;
+          }
         } else {
-          visitedBefore = true;
+          previouslyVisitedSmallCaves.add(this);
         }
-      } else {
-        previouslyVisitedSmallCaves.add(this);
+      }
+
+      for (final neighbour in neighbours.where(
+          (neighbour) => !previouslyVisitedSmallCaves.contains(neighbour))) {
+        yield* neighbour.getPathsToEnd(
+            currentRoute, previouslyVisitedSmallCaves);
+      }
+
+      if (isSmallCave) {
+        if (allowSecondVisit) {
+          if (crapA) {
+            previouslyVisitedSmallCaves.remove(this);
+          }
+
+          if (crapB) {
+            visitedBefore = false;
+          }
+        } else {
+          previouslyVisitedSmallCaves.remove(this);
+        }
       }
     }
 
-    final sum = neighbours
-        .where((neighbour) => !previouslyVisitedSmallCaves.contains(neighbour))
-        .fold<int>(
-            0,
-            (sum, neighbour) =>
-                sum + neighbour.countPathsToEnd(previouslyVisitedSmallCaves));
-
-    if (isSmallCave) {
-      previouslyVisitedSmallCaves.remove(this);
-    }
-
-    return sum;
+    currentRoute.removeLast();
   }
 }
 

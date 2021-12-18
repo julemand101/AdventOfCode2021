@@ -140,7 +140,7 @@ void main() {
           equals(3509));
     });
     test('Solution', () {
-      expect(solveB(input), equals(-1));
+      expect(solveB(input), equals(93858));
     });
-  }, skip: true);
+  });
 }
