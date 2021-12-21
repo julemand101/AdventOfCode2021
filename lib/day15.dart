@@ -5,10 +5,29 @@ import 'dart:collection';
 import 'dart:math';
 import 'dart:typed_data';
 
-int solveA(List<String> input) {
-  final riskLevelGrid = Grid.uInt8List(input.first.length, input.length)
-    ..setAll(input.expand((line) => line.split('').map(int.parse)));
+int solveA(List<String> input) => solve(parseInputToGrid(input));
 
+int solveB(List<String> input) {
+  final smallGrid = parseInputToGrid(input);
+  final bigGrid = Grid.uInt8List(smallGrid.xSize * 5, smallGrid.ySize * 5);
+
+  for (var y = 0; y < bigGrid.ySize; y++) {
+    for (var x = 0; x < bigGrid.xSize; x++) {
+      final value = smallGrid.get(x % smallGrid.xSize, y % smallGrid.ySize) +
+          (x ~/ smallGrid.xSize) +
+          (y ~/ smallGrid.ySize);
+      bigGrid.set(x, y, value <= 9 ? value : value % 9);
+    }
+  }
+
+  return solve(bigGrid);
+}
+
+Grid parseInputToGrid(List<String> input) =>
+    Grid.uInt8List(input.first.length, input.length)
+      ..setAll(input.expand((line) => line.split('').map(int.parse)));
+
+int solve(Grid riskLevelGrid) {
   final distanceGrid = Grid.uInt16List(riskLevelGrid.xSize, riskLevelGrid.ySize)
     ..setAllValue(-1) // Since we have unsigned numbers = set to max
     ..set(0, 0, 0);
@@ -102,4 +121,18 @@ class Grid {
 
   bool isValidCoordinate(int x, int y) =>
       x >= 0 && y >= 0 && x < xSize && y < ySize;
+
+  @override
+  String toString() {
+    final buffer = StringBuffer();
+
+    for (var y = 0; y < ySize; y++) {
+      for (var x = 0; x < xSize; x++) {
+        buffer.write(get(x, y));
+      }
+      buffer.writeln();
+    }
+
+    return buffer.toString();
+  }
 }
