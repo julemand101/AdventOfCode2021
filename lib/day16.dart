@@ -1,15 +1,21 @@
 // --- Day 16: Packet Decoder ---
 // https://adventofcode.com/2021/day/16
 
+import 'dart:math';
 import 'dart:typed_data';
 
-int solveA(String input) => getVersionSum(BitsTransmission.fromInput(input));
-int solveB(String input) => getVersionSum(BitsTransmission.fromInput(input));
+int solveA(String input) {
+  final bitsTransmission = BitsTransmission(input);
+  evaluateBitsExpression(bitsTransmission);
+  return bitsTransmission.versionSum;
+}
 
-int getVersionSum(BitsTransmission bitsTransmission) {
+int solveB(String input) => evaluateBitsExpression(BitsTransmission(input));
+
+int evaluateBitsExpression(BitsTransmission bitsTransmission) {
   final version = bitsTransmission.readBitsAsInt(3);
   final typeId = bitsTransmission.readBitsAsInt(3);
-  var versionSum = version;
+  bitsTransmission.versionSum += version;
 
   if (typeId == 4) {
     // Literal value
@@ -21,39 +27,57 @@ int getVersionSum(BitsTransmission bitsTransmission) {
       numberBits.addAll(bits.skip(1));
     } while (bits[0] == 1);
 
-    //final number = BitsTransmission.convertBitsToInt(numberBits);
+    return BitsTransmission.convertBitsToInt(numberBits);
   } else {
     // Operator
     final lengthTypeId = bitsTransmission.readBits(1).first;
+    final values = <int>[];
 
     if (lengthTypeId == 0) {
       final totalLengthInBits = bitsTransmission.readBitsAsInt(15);
-      final oldCount = bitsTransmission.counter;
+      final oldCounter = bitsTransmission.counter;
 
       do {
-        versionSum += getVersionSum(bitsTransmission);
-      } while (bitsTransmission.counter - oldCount < totalLengthInBits);
+        values.add(evaluateBitsExpression(bitsTransmission));
+      } while (bitsTransmission.counter - oldCounter < totalLengthInBits);
     } else {
       final numberOfSubPackets = bitsTransmission.readBitsAsInt(11);
 
       for (var i = 0; i < numberOfSubPackets; i++) {
-        versionSum += getVersionSum(bitsTransmission);
+        values.add(evaluateBitsExpression(bitsTransmission));
       }
     }
-  }
 
-  return versionSum;
+    switch (typeId) {
+      case 0: // sum packet
+        return values.reduce((a, b) => a + b);
+      case 1: // product packet
+        return values.reduce((a, b) => a * b);
+      case 2: // minimum packet
+        return values.reduce(min);
+      case 3: // maximum packet
+        return values.reduce(max);
+      case 5: // greater than packet
+        return values[0] > values[1] ? 1 : 0;
+      case 6: // less than packet
+        return values[0] < values[1] ? 1 : 0;
+      case 7: // equal to packet
+        return values[0] == values[1] ? 1 : 0;
+      default:
+        throw Exception('Invalid TypeID found: $typeId');
+    }
+  }
 }
 
 class BitsTransmission {
   int counter = 0;
+  int versionSum = 0;
   final Uint8List bitList;
 
-  BitsTransmission(this.bitList);
-  BitsTransmission.fromInput(String input)
-      : this(Uint8List(input.length * 4)
+  BitsTransmission(String input)
+      : bitList = Uint8List(input.length * 4)
           ..setAll(
-              0, input.codeUnits.expand((char) => _hexLetterToBits[char]!)));
+              0, input.codeUnits.expand((char) => _hexLetterToBits[char]!));
 
   Uint8List readBits(int nBits) => bitList.sublist(counter, counter += nBits);
   int readBitsAsInt(int nBits) => convertBitsToInt(readBits(nBits));

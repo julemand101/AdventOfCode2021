@@ -51,7 +51,7 @@ void main() {
       expect(solveB('9C0141080250320F1802104A08'), equals(1));
     });
     test('Solution', () {
-      expect(solveB(input), equals(-1));
+      expect(solveB(input), equals(12301926782560));
     });
-  }, skip: true);
+  });
 }
