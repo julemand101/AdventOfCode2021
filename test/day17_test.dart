@@ -15,4 +15,12 @@ void main() {
       expect(solveA(input), equals(7381));
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(solveB('target area: x=20..30, y=-10..-5'), equals(112));
+    });
+    test('Solution', () {
+      expect(solveB(input), equals(3019));
+    });
+  });
 }

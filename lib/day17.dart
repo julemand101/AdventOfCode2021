@@ -3,35 +3,50 @@
 
 import 'dart:math';
 
-final regExpPatternForInput = RegExp(
-    r'x=(?<minX>-?\d+)..(?<maxX>-?\d+), y=(?<minY>-?\d+)..(?<maxY>-?\d+)');
-
 int solveA(String input) {
-  final regExpMatch = regExpPatternForInput.firstMatch(input)!;
-
-  final minX = int.parse(regExpMatch.namedGroup('minX')!);
-  final maxX = int.parse(regExpMatch.namedGroup('maxX')!);
-  final minY = int.parse(regExpMatch.namedGroup('minY')!);
-  final maxY = int.parse(regExpMatch.namedGroup('maxY')!);
-
   var maxHeight = 0;
 
-  for (var x = 0; x < maxX; x++) {
-    for (var y = 0; y < 1000; y++) {
-      maxHeight = max(
-          maxHeight,
-          isTargetHit(
-            xVelocityStart: x,
-            yVelocityStart: y,
-            minX: minX,
-            maxX: maxX,
-            minY: minY,
-            maxY: maxY,
-          ));
-    }
-  }
+  solve(input, (result) {
+    maxHeight = max(maxHeight, result);
+  });
 
   return maxHeight;
+}
+
+int solveB(String input) {
+  var count = 0;
+
+  solve(input, (result) {
+    if (result != -1) {
+      count++;
+    }
+  });
+
+  return count;
+}
+
+final regExpPatternForInput = RegExp(r'x=(-?\d+)..(-?\d+), y=(-?\d+)..(-?\d+)');
+
+void solve(String input, void Function(int result) handleResult) {
+  final regExpMatch = regExpPatternForInput.firstMatch(input)!;
+
+  final minX = int.parse(regExpMatch[1]!);
+  final maxX = int.parse(regExpMatch[2]!);
+  final minY = int.parse(regExpMatch[3]!);
+  final maxY = int.parse(regExpMatch[4]!);
+
+  for (var x = 0; x <= maxX; x++) {
+    for (var y = -500; y < 500; y++) {
+      handleResult(isTargetHit(
+        xVelocityStart: x,
+        yVelocityStart: y,
+        minX: minX,
+        maxX: maxX,
+        minY: minY,
+        maxY: maxY,
+      ));
+    }
+  }
 }
 
 int isTargetHit({
