@@ -80,7 +80,7 @@ int solve(Grid riskLevelGrid) {
     numberOfUnvisitedPoints--;
 
     // Update neighbour distances
-    final void Function(int, int) updateDistance = (int x, int y) {
+    void updateDistance(int x, int y) {
       if (riskLevelGrid.isValidCoordinate(x, y)) {
         final newDistance = riskLevelGrid.get(x, y) + currentDistance;
 
@@ -92,7 +92,7 @@ int solve(Grid riskLevelGrid) {
           sortedSetOfCandidatesToVisit.add(point);
         }
       }
-    };
+    }
 
     updateDistance(x - 1, y); // Left
     updateDistance(x + 1, y); // Right

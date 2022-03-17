@@ -43,7 +43,7 @@ import 'dart:io';
 import 'package:advent_of_code_2021/$dayFileName';
 import 'package:test/test.dart';
 
-final input = File(\'$dataPath\').readAsLinesSync();
+final input = File('$dataPath').readAsLinesSync();
 
 void main() {
   group('Part One', () {
