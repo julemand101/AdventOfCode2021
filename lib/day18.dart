@@ -88,26 +88,26 @@ class Pair extends SnailfishNumber {
   }
 
   bool trySplitFirstFoundRegularNumber() {
-    final _x = x;
-    if (_x is RegularNumber) {
-      if (_x.value >= 10) {
-        x = _x.split;
+    final x = this.x;
+    if (x is RegularNumber) {
+      if (x.value >= 10) {
+        this.x = x.split;
         return true;
       }
-    } else if (_x is Pair) {
-      if (_x.trySplitFirstFoundRegularNumber()) {
+    } else if (x is Pair) {
+      if (x.trySplitFirstFoundRegularNumber()) {
         return true;
       }
     }
 
-    final _y = y;
-    if (_y is RegularNumber) {
-      if (_y.value >= 10) {
-        y = _y.split;
+    final y = this.y;
+    if (y is RegularNumber) {
+      if (y.value >= 10) {
+        this.y = y.split;
         return true;
       }
-    } else if (_y is Pair) {
-      if (_y.trySplitFirstFoundRegularNumber()) {
+    } else if (y is Pair) {
+      if (y.trySplitFirstFoundRegularNumber()) {
         return true;
       }
     }
@@ -116,11 +116,12 @@ class Pair extends SnailfishNumber {
   }
 
   ExplosionStatus explode([int nestLevel = 0]) {
-    final _x = x, _y = y;
+    final x = this.x;
+    final y = this.y;
 
     if (nestLevel == 4) {
-      if (_x is! RegularNumber || _y is! RegularNumber) {
-        throw Exception('$_x and/or $_y is not regular numbers!');
+      if (x is! RegularNumber || y is! RegularNumber) {
+        throw Exception('$x and/or $y is not regular numbers!');
       }
 
       // LEFT
@@ -136,7 +137,7 @@ class Pair extends SnailfishNumber {
             left = left.y;
           }
 
-          (left as RegularNumber).value += _x.value;
+          (left as RegularNumber).value += x.value;
           break;
         }
 
@@ -157,7 +158,7 @@ class Pair extends SnailfishNumber {
             right = right.x;
           }
 
-          (right as RegularNumber).value += _y.value;
+          (right as RegularNumber).value += y.value;
           break;
         }
 
@@ -167,22 +168,22 @@ class Pair extends SnailfishNumber {
 
       return ExplosionStatus.targetExploded;
     } else {
-      if (_x is Pair) {
-        final status = _x.explode(nestLevel + 1);
+      if (x is Pair) {
+        final status = x.explode(nestLevel + 1);
 
         if (status == ExplosionStatus.targetExploded) {
-          x = RegularNumber(0);
+          this.x = RegularNumber(0);
           return ExplosionStatus.otherTargetExploded;
         } else if (status == ExplosionStatus.otherTargetExploded) {
           return ExplosionStatus.otherTargetExploded;
         }
       }
 
-      if (_y is Pair) {
-        final status = _y.explode(nestLevel + 1);
+      if (y is Pair) {
+        final status = y.explode(nestLevel + 1);
 
         if (status == ExplosionStatus.targetExploded) {
-          y = RegularNumber(0);
+          this.y = RegularNumber(0);
           return ExplosionStatus.otherTargetExploded;
         } else if (status == ExplosionStatus.otherTargetExploded) {
           return ExplosionStatus.otherTargetExploded;

@@ -10,13 +10,17 @@ int solveB(Iterable<String> input) {
   var sum = 0;
 
   for (final line in input) {
-    final _parts = line.split(' | ');
+    final lineParts = line.split(' | ');
 
     // Each number is represented as a list of individually letters
-    final List<List<String>> randomNumbers =
-        _parts.first.split(' ').map((e) => e.split('')).toList(growable: false);
-    final List<List<String>> outputNumbers =
-        _parts.last.split(' ').map((e) => e.split('')).toList(growable: false);
+    final List<List<String>> randomNumbers = lineParts.first
+        .split(' ')
+        .map((e) => e.split(''))
+        .toList(growable: false);
+    final List<List<String>> outputNumbers = lineParts.last
+        .split(' ')
+        .map((e) => e.split(''))
+        .toList(growable: false);
 
     // Array position to display segment mapping:
     // Source: https://en.wikipedia.org/wiki/Seven-segment_display
