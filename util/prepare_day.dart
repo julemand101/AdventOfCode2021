@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 void main(List<String> args) {
@@ -7,15 +6,15 @@ void main(List<String> args) {
     return;
   }
 
-  final dayNumber = int.parse(args[0]);
-  final paddedDayNumber = dayNumber.toString().padLeft(2, '0');
+  final dayNumber = args[0];
+  final paddedDayNumber = dayNumber.padLeft(2, '0');
   final dayTitle = args[1];
 
   // Create lib file
   final dayFileName = 'day$paddedDayNumber.dart';
-  unawaited(
-    File('lib/$dayFileName').writeAsString(
-      '''
+
+  File('lib/$dayFileName').writeAsString(
+    '''
 // --- Day $dayNumber: $dayTitle ---
 // https://adventofcode.com/2021/day/$dayNumber
 
@@ -23,19 +22,17 @@ int solveA(Iterable<String> input) {
   return 0;
 }
 ''',
-    ),
   );
 
   // Create empty test data file
   final dataPath = 'test/data/day$paddedDayNumber.txt';
-  unawaited(File(dataPath).create());
+  File(dataPath).create();
 
   // Create unit tests
-  unawaited(
-    File(
-      'test/day${paddedDayNumber}_test.dart',
-    ).writeAsString(
-      '''
+  File(
+    'test/day${paddedDayNumber}_test.dart',
+  ).writeAsString(
+    '''
 // --- Day $dayNumber: $dayTitle ---
 // https://adventofcode.com/2021/day/$dayNumber
 
@@ -60,6 +57,5 @@ void main() {
   });
 }
 ''',
-    ),
   );
 }
