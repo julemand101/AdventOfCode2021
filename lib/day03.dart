@@ -9,7 +9,7 @@ int solveA(List<String> input) {
   // for each position. Then we check if the number of bits in a column is the
   // majority by checking if we have counted more bits than the half of the
   // input size.
-  final gammaRate = input.fold<List<int>>(
+  final gammaRate = input.fold(
     List.filled(numberOfBitsInRow, 0, growable: false),
     (sumList, row) {
       final rowCodeUnits = row.codeUnits;
@@ -23,7 +23,7 @@ int solveA(List<String> input) {
 
       return sumList;
     },
-  ).fold<int>(
+  ).fold(
     0,
     (gammaRate, sumBit) =>
         (gammaRate << 1) ^ (sumBit > inputLengthDividedByTwo ? 1 : 0),

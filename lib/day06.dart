@@ -5,11 +5,13 @@ int solveA(Iterable<String> input) => solve(input, simulateDays: 80);
 int solveB(Iterable<String> input) => solve(input, simulateDays: 256);
 
 int solve(Iterable<String> input, {required int simulateDays}) {
-  final lanternFishList = input.first.split(',').map(int.parse).fold<List<int>>(
-      List.generate(9, (_) => 0, growable: false), (list, daysBeforeNewFish) {
-    list[daysBeforeNewFish]++;
-    return list;
-  });
+  final lanternFishList = input.first.split(',').map(int.parse).fold(
+    List.generate(9, (_) => 0, growable: false),
+    (list, daysBeforeNewFish) {
+      list[daysBeforeNewFish]++;
+      return list;
+    },
+  );
 
   for (var day = 0; day < simulateDays; day++) {
     lanternFishList[(day + 7) % lanternFishList.length] +=

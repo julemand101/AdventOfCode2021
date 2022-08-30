@@ -23,7 +23,7 @@ int solve(Iterable<String> input, {required FuelCalculator getFuelUsage}) {
 }
 
 int calculateFuel(List<int> list, int target, FuelCalculator getFuelUsage) =>
-    list.fold<int>(
+    list.fold(
         0,
         (sumFuel, currentPosition) =>
             sumFuel + getFuelUsage((currentPosition - target).abs()));
