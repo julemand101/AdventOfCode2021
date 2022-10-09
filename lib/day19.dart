@@ -167,7 +167,6 @@ Result solve(Iterable<String> input) {
   Scanner resultScanner = scanners.removeAt(0);
   Set<Point3d> scannerCenters = {};
 
-  mainLoop:
   while (scanners.isNotEmpty) {
     final resultScannerPointsSet = resultScanner.points.toSet();
 
@@ -199,7 +198,6 @@ Result solve(Iterable<String> input) {
             );
             scanners.removeAt(scannerIndex);
             scannerCenters.add(movedScanner.center);
-            continue mainLoop;
           }
         }
       }
