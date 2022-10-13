@@ -25,4 +25,24 @@ void main() {
       );
     });
   });
+  group('Part Two', () {
+    test('Example 1', () {
+      expect(
+        solveB(
+          player1StartingPosition: 4,
+          player2StartingPosition: 8,
+        ),
+        equals(444356092776315),
+      );
+    });
+    test('Solution', () {
+      expect(
+        solveB(
+          player1StartingPosition: 7,
+          player2StartingPosition: 5,
+        ),
+        equals(809953813657517),
+      );
+    });
+  });
 }
