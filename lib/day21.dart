@@ -48,16 +48,22 @@ int solveA({
   return min(player1Score, player2Score) * dice.countRolls;
 }
 
-// key = rollSum, value = how often we get this sum when rolling the dice
-const Map<int, int> distribution = {
-  3: 1,
-  4: 3,
-  5: 6,
-  6: 7,
-  7: 6,
-  8: 3,
-  9: 1,
-};
+const List<DiceRollLikelihood> diceRollLikelihoodList = [
+  DiceRollLikelihood(diceRoll: 3, likelihood: 1),
+  DiceRollLikelihood(diceRoll: 4, likelihood: 3),
+  DiceRollLikelihood(diceRoll: 5, likelihood: 6),
+  DiceRollLikelihood(diceRoll: 6, likelihood: 7),
+  DiceRollLikelihood(diceRoll: 7, likelihood: 6),
+  DiceRollLikelihood(diceRoll: 8, likelihood: 3),
+  DiceRollLikelihood(diceRoll: 9, likelihood: 1),
+];
+
+class DiceRollLikelihood {
+  final int diceRoll;
+  final int likelihood;
+
+  const DiceRollLikelihood({required this.diceRoll, required this.likelihood});
+}
 
 int solveB({
   required int player1StartingPosition,
@@ -92,6 +98,14 @@ Outcome nextStep({
   int player2Score = 0,
   bool player1Turn = true,
 }) {
+  if (player1Score >= 21) {
+    return const Outcome(1, 0);
+  }
+
+  if (player2Score >= 21) {
+    return const Outcome(0, 1);
+  }
+
   final outcomeKey = createKey(
     player1Position: player1Position.countPosition,
     player1Score: player1Score,
@@ -100,55 +114,39 @@ Outcome nextStep({
     player1Turn: player1Turn,
   );
 
-  final cacheValue = outcomeCache[outcomeKey];
+  final cachedOutcome = outcomeCache[outcomeKey];
 
-  if (cacheValue != null) {
-    return cacheValue;
-  }
-
-  if (player1Score >= 21) {
-    return outcomeCache[outcomeKey] = const Outcome(1, 0);
-  }
-
-  if (player2Score >= 21) {
-    return outcomeCache[outcomeKey] = const Outcome(0, 1);
+  if (cachedOutcome != null) {
+    return cachedOutcome;
   }
 
   var newOutcome = const Outcome(0, 0);
 
   if (player1Turn) {
-    for (final move in distribution.entries) {
-      final stepsToMove = move.key;
-      final numberOfTimes = move.value;
-
-      final newPositionValue = player1Position.move(stepsToMove);
-      newOutcome += (nextStep(
-            outcomeCache: outcomeCache,
-            player1Position: player1Position,
-            player2Position: player2Position,
-            player1Score: player1Score + newPositionValue,
-            player2Score: player2Score,
-            player1Turn: false,
-          ) *
-          numberOfTimes);
-      player1Position.move(-stepsToMove);
+    for (final diceThrow in diceRollLikelihoodList) {
+      final newPositionValue = player1Position.move(diceThrow.diceRoll);
+      newOutcome += nextStep(
+              outcomeCache: outcomeCache,
+              player1Position: player1Position,
+              player2Position: player2Position,
+              player1Score: player1Score + newPositionValue,
+              player2Score: player2Score,
+              player1Turn: false) *
+          diceThrow.likelihood;
+      player1Position.move(-diceThrow.diceRoll);
     }
   } else {
-    for (final move in distribution.entries) {
-      final stepsToMove = move.key;
-      final likelihood = move.value;
-
-      final newPositionValue = player2Position.move(stepsToMove);
-      newOutcome += (nextStep(
-            outcomeCache: outcomeCache,
-            player1Position: player1Position,
-            player2Position: player2Position,
-            player1Score: player1Score,
-            player2Score: player2Score + newPositionValue,
-            player1Turn: true,
-          ) *
-          likelihood);
-      player2Position.move(-stepsToMove);
+    for (final diceThrow in diceRollLikelihoodList) {
+      final newPositionValue = player2Position.move(diceThrow.diceRoll);
+      newOutcome += nextStep(
+              outcomeCache: outcomeCache,
+              player1Position: player1Position,
+              player2Position: player2Position,
+              player1Score: player1Score,
+              player2Score: player2Score + newPositionValue,
+              player1Turn: true) *
+          diceThrow.likelihood;
+      player2Position.move(-diceThrow.diceRoll);
     }
   }
 
