@@ -80,9 +80,9 @@ int createKey({
   required bool player1Turn,
 }) =>
     (player1Position) +
-        (player1Score << 16) +
-        (player2Position << 32) +
-        (player2Score << 48) * (player1Turn ? 1 : -1);
+    (player1Score << 16) +
+    (player2Position << 32) +
+    (player2Score << 48) * (player1Turn ? 1 : -1);
 
 Outcome nextStep({
   required Map<int, Outcome> outcomeCache,
@@ -174,4 +174,3 @@ class Outcome {
   @override
   String toString() => '(Player1Wins: $player1Wins, Player2Wins: $player2Wins)';
 }
-
