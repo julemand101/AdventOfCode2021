@@ -48,7 +48,7 @@ void main() {
           equals(590784));
     });
     test('Solution', () {
-      expect(solveA(input), equals(-1));
+      expect(solveA(input), equals(588200));
     });
-  }, skip: true);
+  });
 }
