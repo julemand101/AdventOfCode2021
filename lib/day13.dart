@@ -12,27 +12,29 @@ int solveA(List<String> input) {
       firstFoldInstruction = input[i + 1];
       break;
     }
-    final parts = input[i].split(',');
-    points.add(Point(int.parse(parts[0]), int.parse(parts[1])));
+    final [x, y] = input[i].split(',').map(int.parse).toList(growable: false);
+    points.add(Point(x, y));
   }
 
-  final parts = firstFoldInstruction!.split('=');
-  final value = int.parse(parts[1]);
+  switch (firstFoldInstruction!.split('=')) {
+    case ['fold along x', final valueString]:
+      final value = int.parse(valueString);
+      final pointsToMove = points.where((point) => point.x > value).toList();
 
-  if (parts[0] == 'fold along x') {
-    final pointsToMove = points.where((point) => point.x > value).toList();
-    points
-      ..removeAll(pointsToMove)
-      ..addAll(pointsToMove
-          .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
-  } else if (parts[0] == 'fold along y') {
-    final pointsToMove = points.where((point) => point.y > value).toList();
-    points
-      ..removeAll(pointsToMove)
-      ..addAll(pointsToMove
-          .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
-  } else {
-    throw Exception('Invalid command: ${parts[0]}');
+      points
+        ..removeAll(pointsToMove)
+        ..addAll(pointsToMove
+            .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
+    case ['fold along y', final valueString]:
+      final value = int.parse(valueString);
+      final pointsToMove = points.where((point) => point.y > value).toList();
+
+      points
+        ..removeAll(pointsToMove)
+        ..addAll(pointsToMove
+            .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
+    case [final command, ...]:
+      throw Exception('Invalid command: $command');
   }
 
   return points.length;
@@ -41,29 +43,32 @@ int solveA(List<String> input) {
 String solveB(List<String> input) {
   final points = <Point<int>>{};
 
-  for (final line in input.takeWhile((line) => line.isNotEmpty)) {
-    final parts = line.split(',');
-    points.add(Point(int.parse(parts[0]), int.parse(parts[1])));
+  for (final [x, y] in input
+      .takeWhile((line) => line.isNotEmpty)
+      .map((line) => line.split(',').map(int.parse).toList(growable: false))) {
+    points.add(Point(x, y));
   }
 
   for (final line in input.skipWhile((line) => line.isNotEmpty).skip(1)) {
-    final parts = line.split('=');
-    final value = int.parse(parts[1]);
+    switch (line.split('=')) {
+      case ['fold along x', final valueString]:
+        final value = int.parse(valueString);
+        final pointsToMove = points.where((point) => point.x > value).toList();
 
-    if (parts[0] == 'fold along x') {
-      final pointsToMove = points.where((point) => point.x > value).toList();
-      points
-        ..removeAll(pointsToMove)
-        ..addAll(pointsToMove
-            .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
-    } else if (parts[0] == 'fold along y') {
-      final pointsToMove = points.where((point) => point.y > value).toList();
-      points
-        ..removeAll(pointsToMove)
-        ..addAll(pointsToMove
-            .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
-    } else {
-      throw Exception('Invalid command: ${parts[0]}');
+        points
+          ..removeAll(pointsToMove)
+          ..addAll(pointsToMove
+              .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
+      case ['fold along y', final valueString]:
+        final value = int.parse(valueString);
+        final pointsToMove = points.where((point) => point.y > value).toList();
+
+        points
+          ..removeAll(pointsToMove)
+          ..addAll(pointsToMove
+              .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
+      case [final command, ...]:
+        throw Exception('Invalid command: $command');
     }
   }
 

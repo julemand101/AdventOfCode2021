@@ -48,22 +48,17 @@ int solveA({
   return min(player1Score, player2Score) * dice.countRolls;
 }
 
+typedef DiceRollLikelihood = ({int diceRoll, int likelihood});
+
 const List<DiceRollLikelihood> diceRollLikelihoodList = [
-  DiceRollLikelihood(diceRoll: 3, likelihood: 1),
-  DiceRollLikelihood(diceRoll: 4, likelihood: 3),
-  DiceRollLikelihood(diceRoll: 5, likelihood: 6),
-  DiceRollLikelihood(diceRoll: 6, likelihood: 7),
-  DiceRollLikelihood(diceRoll: 7, likelihood: 6),
-  DiceRollLikelihood(diceRoll: 8, likelihood: 3),
-  DiceRollLikelihood(diceRoll: 9, likelihood: 1),
+  (diceRoll: 3, likelihood: 1),
+  (diceRoll: 4, likelihood: 3),
+  (diceRoll: 5, likelihood: 6),
+  (diceRoll: 6, likelihood: 7),
+  (diceRoll: 7, likelihood: 6),
+  (diceRoll: 8, likelihood: 3),
+  (diceRoll: 9, likelihood: 1),
 ];
-
-class DiceRollLikelihood {
-  final int diceRoll;
-  final int likelihood;
-
-  const DiceRollLikelihood({required this.diceRoll, required this.likelihood});
-}
 
 int solveB({
   required int player1StartingPosition,

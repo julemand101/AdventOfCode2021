@@ -6,7 +6,7 @@ int solveB(Iterable<String> input) => solve(input, simulateDays: 256);
 
 int solve(Iterable<String> input, {required int simulateDays}) {
   final lanternFishList = input.first.split(',').map(int.parse).fold(
-    List.generate(9, (_) => 0, growable: false),
+    List.filled(9, 0, growable: false),
     (list, daysBeforeNewFish) {
       list[daysBeforeNewFish]++;
       return list;

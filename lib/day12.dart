@@ -19,11 +19,9 @@ int solveA(Iterable<String> input) {
 int solveB(Iterable<String> input) {
   final nodeMap = <String, Node>{};
 
-  for (final line in input) {
-    final list = line.split('-');
-    final nodeA = nodeMap.getNode(list[0]);
-    final nodeB = nodeMap.getNode(list[1]);
-
+  for (final [nodeA, nodeB] in input.map(
+    (line) => line.split('-').map(nodeMap.getNode).toList(growable: false),
+  )) {
     nodeA.neighbours.add(nodeB);
     nodeB.neighbours.add(nodeA);
   }

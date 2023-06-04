@@ -12,9 +12,8 @@ int solve(List<String> input, {required int enhanceIterations}) {
   ];
   var image = Image();
 
-  for (MapEntry<int, String> lineEntry in input.asMap().entries.skip(2)) {
-    final y = lineEntry.key - 2;
-    final line = lineEntry.value;
+  for (final MapEntry(:key, value: line) in input.asMap().entries.skip(2)) {
+    final y = key - 2;
 
     for (var x = 0; x < line.length; x++) {
       image.set(x, y, line[x] == '#');

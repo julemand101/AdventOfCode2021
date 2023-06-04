@@ -52,18 +52,15 @@ int solveB(Iterable<String> input) {
           displaySegmentCandidates[4].removeAll(numberSegments);
           displaySegmentCandidates[5].removeAll(numberSegments);
           displaySegmentCandidates[6].removeAll(numberSegments);
-          break;
         case 4: // Found: 4
           displaySegmentCandidates[0].removeAll(numberSegments);
           displaySegmentCandidates[3].removeAll(numberSegments);
           displaySegmentCandidates[4].removeAll(numberSegments);
-          break;
         case 3: // Found: 7
           displaySegmentCandidates[3].removeAll(numberSegments);
           displaySegmentCandidates[4].removeAll(numberSegments);
           displaySegmentCandidates[5].removeAll(numberSegments);
           displaySegmentCandidates[6].removeAll(numberSegments);
-          break;
       }
     }
 

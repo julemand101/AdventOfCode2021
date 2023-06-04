@@ -3,6 +3,8 @@
 
 import 'dart:typed_data';
 
+typedef Result = ({int stepsUntilSync, int sumOfFlashes});
+
 int solveA(Iterable<String> input) =>
     solve(input, unlimitedSteps: false).sumOfFlashes;
 
@@ -45,7 +47,7 @@ Result solve(Iterable<String> input, {required bool unlimitedSteps}) {
     // We therefore check if the number of flashed points is the same as the
     // number of all elements in the grid.
     if (flashedIndexes.length == grid.list.length) {
-      return Result(step, sumOfFlashes);
+      return (stepsUntilSync: step, sumOfFlashes: sumOfFlashes);
     }
 
     // Finally, any octopus that flashed during this step has its energy level
@@ -55,14 +57,7 @@ Result solve(Iterable<String> input, {required bool unlimitedSteps}) {
     }
   }
 
-  return Result(100, sumOfFlashes);
-}
-
-class Result {
-  final int stepsUntilSync;
-  final int sumOfFlashes;
-
-  Result(this.stepsUntilSync, this.sumOfFlashes);
+  return (stepsUntilSync: 100, sumOfFlashes: sumOfFlashes);
 }
 
 class Grid {

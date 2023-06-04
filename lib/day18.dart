@@ -88,28 +88,20 @@ class Pair extends SnailfishNumber {
   }
 
   bool trySplitFirstFoundRegularNumber() {
-    final x = this.x;
-    if (x is RegularNumber) {
-      if (x.value >= 10) {
+    switch (this.x) {
+      case RegularNumber(value: final value) && final x when value >= 10:
         this.x = x.split;
         return true;
-      }
-    } else if (x is Pair) {
-      if (x.trySplitFirstFoundRegularNumber()) {
+      case Pair() && final x when x.trySplitFirstFoundRegularNumber():
         return true;
-      }
     }
 
-    final y = this.y;
-    if (y is RegularNumber) {
-      if (y.value >= 10) {
+    switch (this.y) {
+      case RegularNumber(value: final value) && final y when value >= 10:
         this.y = y.split;
         return true;
-      }
-    } else if (y is Pair) {
-      if (y.trySplitFirstFoundRegularNumber()) {
+      case Pair() && final y when y.trySplitFirstFoundRegularNumber():
         return true;
-      }
     }
 
     return false;

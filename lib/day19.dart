@@ -9,13 +9,8 @@ class Point3d {
   const Point3d(this.x, this.y, this.z);
 
   factory Point3d.fromLine(String line) {
-    final stringParts = line.split(',');
-
-    return Point3d(
-      int.parse(stringParts[0]),
-      int.parse(stringParts[1]),
-      int.parse(stringParts[2]),
-    );
+    final [x, y, z] = line.split(',').map(int.parse).toList(growable: false);
+    return Point3d(x, y, z);
   }
 
   double distance(Point3d otherPoint) => pow(
@@ -89,7 +84,7 @@ class Scanner {
   factory Scanner.fromLines(List<String> lines) => Scanner(
         id: int.parse(_scannerIdPattern.firstMatch(lines.first)![1]!),
         center: const Point3d(0, 0, 0),
-        points: [for (final line in lines.skip(1)) Point3d.fromLine(line)],
+        points: [...lines.skip(1).map(Point3d.fromLine)],
       );
 
   // empty list = no overlap
@@ -152,15 +147,7 @@ Iterable<Scanner> parseInputToScanners(Iterable<String> lines) sync* {
 int solveA(Iterable<String> input) => solve(input).numberOfBeacons;
 int solveB(Iterable<String> input) => solve(input).largestManhattanDistance;
 
-class Result {
-  final int numberOfBeacons;
-  final int largestManhattanDistance;
-
-  const Result({
-    required this.numberOfBeacons,
-    required this.largestManhattanDistance,
-  });
-}
+typedef Result = ({int numberOfBeacons, int largestManhattanDistance});
 
 Result solve(Iterable<String> input) {
   final List<Scanner> scanners = [...parseInputToScanners(input)];
@@ -214,7 +201,7 @@ Result solve(Iterable<String> input) {
     }
   }
 
-  return Result(
+  return (
     numberOfBeacons: resultScanner.points.length,
     largestManhattanDistance: largestManhattanDistance,
   );

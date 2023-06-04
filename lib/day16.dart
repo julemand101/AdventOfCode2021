@@ -48,24 +48,23 @@ int evaluateBitsExpression(BitsTransmission bitsTransmission) {
       }
     }
 
-    switch (typeId) {
-      case 0: // sum packet
-        return values.reduce((a, b) => a + b);
-      case 1: // product packet
-        return values.reduce((a, b) => a * b);
-      case 2: // minimum packet
-        return values.reduce(min);
-      case 3: // maximum packet
-        return values.reduce(max);
-      case 5: // greater than packet
-        return values[0] > values[1] ? 1 : 0;
-      case 6: // less than packet
-        return values[0] < values[1] ? 1 : 0;
-      case 7: // equal to packet
-        return values[0] == values[1] ? 1 : 0;
-      default:
-        throw Exception('Invalid TypeID found: $typeId');
-    }
+    return switch (typeId) {
+      // sum packet
+      0 => values.reduce((a, b) => a + b),
+      // product packet
+      1 => values.reduce((a, b) => a * b),
+      // minimum packet
+      2 => values.reduce(min),
+      // maximum packet
+      3 => values.reduce(max),
+      // greater than packet
+      5 => values[0] > values[1] ? 1 : 0,
+      // less than packet
+      6 => values[0] < values[1] ? 1 : 0,
+      // equal to packet
+      7 => values[0] == values[1] ? 1 : 0,
+      _ => throw Exception('Invalid TypeID found: $typeId'),
+    };
   }
 }
 
