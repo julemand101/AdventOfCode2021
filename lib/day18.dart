@@ -88,7 +88,7 @@ class Pair extends SnailfishNumber {
   }
 
   bool trySplitFirstFoundRegularNumber() {
-    switch (this.x) {
+    switch (x) {
       case RegularNumber(value: final value) && final x when value >= 10:
         this.x = x.split;
         return true;
@@ -96,7 +96,7 @@ class Pair extends SnailfishNumber {
         return true;
     }
 
-    switch (this.y) {
+    switch (y) {
       case RegularNumber(value: final value) && final y when value >= 10:
         this.y = y.split;
         return true;
