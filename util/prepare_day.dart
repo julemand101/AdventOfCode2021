@@ -8,9 +8,8 @@ void main(List<String> args) {
     return;
   }
 
-  final dayNumber = args[0];
+  final [dayNumber, dayTitle] = args;
   final paddedDayNumber = dayNumber.padLeft(2, '0');
-  final dayTitle = args[1];
 
   // Create lib file
   final dayFileName = 'day$paddedDayNumber.dart';
@@ -35,6 +34,7 @@ int solveA(Iterable<String> input) {
 
 import 'dart:io';
 import 'package:advent_of_code_$year/$dayFileName';
+import 'package:advent_of_code_$year/util.dart';
 import 'package:test/test.dart';
 
 final input = File('$dataPath').readAsLinesSync();
@@ -43,10 +43,13 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(const [
-            '<someLine>',
-          ]),
-          equals(-1));
+        solveA(
+          r\'\'\'
+<SomeLines>
+\'\'\'.asLines,
+        ),
+        equals(-1),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(-1));
