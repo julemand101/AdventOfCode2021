@@ -70,7 +70,7 @@ int solveB(Iterable<String> input) {
 
   final boxList = <Box>[];
   final pointMap = <Point3d, bool>{};
-  var turnedOnSum = 0;
+  //var turnedOnSum = 0;
 
   for (final line in input) {
     final match = lineRegExp.firstMatch(line)!;
