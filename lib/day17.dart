@@ -37,14 +37,16 @@ void solve(String input, void Function(int result) handleResult) {
 
   for (var x = 0; x <= maxX; x++) {
     for (var y = -500; y < 500; y++) {
-      handleResult(isTargetHit(
-        xVelocityStart: x,
-        yVelocityStart: y,
-        minX: minX,
-        maxX: maxX,
-        minY: minY,
-        maxY: maxY,
-      ));
+      handleResult(
+        isTargetHit(
+          xVelocityStart: x,
+          yVelocityStart: y,
+          minX: minX,
+          maxX: maxX,
+          minY: minY,
+          maxY: maxY,
+        ),
+      );
     }
   }
 }

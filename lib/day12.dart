@@ -49,7 +49,9 @@ class Node {
   Node(this.name) : isSmallCave = name.toLowerCase() == name;
 
   Iterable<String> getPathsToEnd(
-      List<Node> currentRoute, Set<Node> previouslyVisitedSmallCaves) sync* {
+    List<Node> currentRoute,
+    Set<Node> previouslyVisitedSmallCaves,
+  ) sync* {
     currentRoute.add(this);
     visits++;
 
@@ -61,9 +63,12 @@ class Node {
       }
 
       for (final neighbour in neighbours.where(
-          (neighbour) => !previouslyVisitedSmallCaves.contains(neighbour))) {
+        (neighbour) => !previouslyVisitedSmallCaves.contains(neighbour),
+      )) {
         yield* neighbour.getPathsToEnd(
-            currentRoute, previouslyVisitedSmallCaves);
+          currentRoute,
+          previouslyVisitedSmallCaves,
+        );
       }
 
       if (isSmallCave && (!allowSecondVisit || visits > 1)) {

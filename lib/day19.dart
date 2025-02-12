@@ -13,7 +13,8 @@ class Point3d {
     return Point3d(x, y, z);
   }
 
-  double distance(Point3d otherPoint) => pow(
+  double distance(Point3d otherPoint) =>
+      pow(
         pow(otherPoint.x - x, 2) +
             pow(otherPoint.y - y, 2) +
             pow(otherPoint.z - z, 2),
@@ -45,9 +46,10 @@ class Point3d {
       yield currentPoint;
 
       for (var turnIndex = 0; turnIndex < 3; turnIndex++) {
-        currentPoint = rollIndex % 2 == 0
-            ? currentPoint.turnClockWise()
-            : currentPoint.turnCounterClockWise();
+        currentPoint =
+            rollIndex % 2 == 0
+                ? currentPoint.turnClockWise()
+                : currentPoint.turnCounterClockWise();
         yield (currentPoint);
       }
     }
@@ -74,33 +76,33 @@ class Scanner {
     for (final startPoint in points)
       {
         for (final endPoint in points)
-          if (!identical(startPoint, endPoint)) startPoint.distance(endPoint)
-      }
+          if (!identical(startPoint, endPoint)) startPoint.distance(endPoint),
+      },
   ];
 
   Scanner({required this.id, required this.center, required this.points});
 
   static final RegExp _scannerIdPattern = RegExp(r'--- scanner (\d+) ---');
   factory Scanner.fromLines(List<String> lines) => Scanner(
-        id: int.parse(_scannerIdPattern.firstMatch(lines.first)![1]!),
-        center: const Point3d(0, 0, 0),
-        points: [...lines.skip(1).map(Point3d.fromLine)],
-      );
+    id: int.parse(_scannerIdPattern.firstMatch(lines.first)![1]!),
+    center: const Point3d(0, 0, 0),
+    points: [...lines.skip(1).map(Point3d.fromLine)],
+  );
 
   // empty list = no overlap
   List<OverlappingWithResult> overlappingWith(Scanner otherScanner) => [
-        for (var a = 0; a < distancesFromPointIndex.length; a++)
-          for (var b = 0; b < otherScanner.distancesFromPointIndex.length; b++)
-            if (distancesFromPointIndex[a]
-                    .intersection(otherScanner.distancesFromPointIndex[b])
-                    .length >
-                10)
-              OverlappingWithResult(a, b)
-      ];
+    for (var a = 0; a < distancesFromPointIndex.length; a++)
+      for (var b = 0; b < otherScanner.distancesFromPointIndex.length; b++)
+        if (distancesFromPointIndex[a]
+                .intersection(otherScanner.distancesFromPointIndex[b])
+                .length >
+            10)
+          OverlappingWithResult(a, b),
+  ];
 
   Iterable<Scanner> get rotations sync* {
     final List<Iterator<Point3d>> rotationIterators = [
-      ...points.map((e) => e.allRotations.iterator)
+      ...points.map((e) => e.allRotations.iterator),
     ];
 
     for (var i = 0; i < 24; i++) {
@@ -109,17 +111,17 @@ class Scanner {
         center: center,
         points: [
           for (final iterator in rotationIterators)
-            (iterator..moveNext()).current
+            (iterator..moveNext()).current,
         ],
       );
     }
   }
 
   Scanner move(int dX, int dY, int dZ) => Scanner(
-        id: id,
-        center: center.moveBy(dX, dY, dZ),
-        points: [...points.map((p) => p.moveBy(dX, dY, dZ))],
-      );
+    id: id,
+    center: center.moveBy(dX, dY, dZ),
+    points: [...points.map((p) => p.moveBy(dX, dY, dZ))],
+  );
 }
 
 class OverlappingWithResult {
@@ -167,15 +169,18 @@ Result solve(Iterable<String> input) {
 
         final overlappingPointInResultScanner = resultScanner.points[s1Index];
 
-        for (Scanner movedScanner in scanner.rotations.map((e) => e.move(
-              overlappingPointInResultScanner.x - e.points[s2Index].x,
-              overlappingPointInResultScanner.y - e.points[s2Index].y,
-              overlappingPointInResultScanner.z - e.points[s2Index].z,
-            ))) {
-          final overlappingPointsCount = movedScanner.points
-              .toSet()
-              .intersection(resultScannerPointsSet)
-              .length;
+        for (Scanner movedScanner in scanner.rotations.map(
+          (e) => e.move(
+            overlappingPointInResultScanner.x - e.points[s2Index].x,
+            overlappingPointInResultScanner.y - e.points[s2Index].y,
+            overlappingPointInResultScanner.z - e.points[s2Index].z,
+          ),
+        )) {
+          final overlappingPointsCount =
+              movedScanner.points
+                  .toSet()
+                  .intersection(resultScannerPointsSet)
+                  .length;
 
           if (overlappingPointsCount > 1) {
             resultScanner = Scanner(

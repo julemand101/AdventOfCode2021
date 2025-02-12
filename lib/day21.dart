@@ -16,7 +16,7 @@ class PlayerPosition {
   int get countPosition => _countPosition + 1;
 
   PlayerPosition({required int startPosition})
-      : _countPosition = startPosition - 1;
+    : _countPosition = startPosition - 1;
 
   int move(int value) =>
       (_countPosition = ((_countPosition += value) % 10)) + 1;
@@ -120,26 +120,30 @@ Outcome nextStep({
   if (player1Turn) {
     for (final diceThrow in diceRollLikelihoodList) {
       final newPositionValue = player1Position.move(diceThrow.diceRoll);
-      newOutcome += nextStep(
-              outcomeCache: outcomeCache,
-              player1Position: player1Position,
-              player2Position: player2Position,
-              player1Score: player1Score + newPositionValue,
-              player2Score: player2Score,
-              player1Turn: false) *
+      newOutcome +=
+          nextStep(
+            outcomeCache: outcomeCache,
+            player1Position: player1Position,
+            player2Position: player2Position,
+            player1Score: player1Score + newPositionValue,
+            player2Score: player2Score,
+            player1Turn: false,
+          ) *
           diceThrow.likelihood;
       player1Position.move(-diceThrow.diceRoll);
     }
   } else {
     for (final diceThrow in diceRollLikelihoodList) {
       final newPositionValue = player2Position.move(diceThrow.diceRoll);
-      newOutcome += nextStep(
-              outcomeCache: outcomeCache,
-              player1Position: player1Position,
-              player2Position: player2Position,
-              player1Score: player1Score,
-              player2Score: player2Score + newPositionValue,
-              player1Turn: true) *
+      newOutcome +=
+          nextStep(
+            outcomeCache: outcomeCache,
+            player1Position: player1Position,
+            player2Position: player2Position,
+            player1Score: player1Score,
+            player2Score: player2Score + newPositionValue,
+            player1Turn: true,
+          ) *
           diceThrow.likelihood;
       player2Position.move(-diceThrow.diceRoll);
     }
@@ -154,15 +158,11 @@ class Outcome {
 
   const Outcome(this.player1Wins, this.player2Wins);
 
-  Outcome operator *(int factor) => Outcome(
-        player1Wins * factor,
-        player2Wins * factor,
-      );
+  Outcome operator *(int factor) =>
+      Outcome(player1Wins * factor, player2Wins * factor);
 
-  Outcome operator +(Outcome other) => Outcome(
-        player1Wins + other.player1Wins,
-        player2Wins + other.player2Wins,
-      );
+  Outcome operator +(Outcome other) =>
+      Outcome(player1Wins + other.player1Wins, player2Wins + other.player2Wins);
 
   @override
   String toString() => '(Player1Wins: $player1Wins, Player2Wins: $player2Wins)';

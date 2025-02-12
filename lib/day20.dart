@@ -8,7 +8,7 @@ int solveB(List<String> input) => solve(input, enhanceIterations: 50);
 
 int solve(List<String> input, {required int enhanceIterations}) {
   List<bool> imageEnhancementAlgorithm = [
-    ...input.first.split('').map((e) => e == '#')
+    ...input.first.split('').map((e) => e == '#'),
   ];
   var image = Image();
 

@@ -13,7 +13,8 @@ int solveB(List<String> input) {
 
   for (var y = 0; y < bigGrid.ySize; y++) {
     for (var x = 0; x < bigGrid.xSize; x++) {
-      final value = smallGrid.get(x % smallGrid.xSize, y % smallGrid.ySize) +
+      final value =
+          smallGrid.get(x % smallGrid.xSize, y % smallGrid.ySize) +
           (x ~/ smallGrid.xSize) +
           (y ~/ smallGrid.ySize);
       bigGrid.set(x, y, value <= 9 ? value : value % 9);
@@ -28,9 +29,10 @@ Grid parseInputToGrid(List<String> input) =>
       ..setAll(input.expand((line) => line.split('').map(int.parse)));
 
 int solve(Grid riskLevelGrid) {
-  final distanceGrid = Grid.uInt16List(riskLevelGrid.xSize, riskLevelGrid.ySize)
-    ..setAllValue(-1) // Since we have unsigned numbers = set to max
-    ..set(0, 0, 0);
+  final distanceGrid =
+      Grid.uInt16List(riskLevelGrid.xSize, riskLevelGrid.ySize)
+        ..setAllValue(-1) // Since we have unsigned numbers = set to max
+        ..set(0, 0, 0);
 
   // Use of sorted SplayTreeSet of points we should consider to visit. The set
   // does not contains points where we have yet to give it a distance since that
@@ -45,8 +47,9 @@ int solve(Grid riskLevelGrid) {
     if (a == b) {
       return 0;
     } else {
-      final compareDistance =
-          distanceGrid.get(a.x, a.y).compareTo(distanceGrid.get(b.x, b.y));
+      final compareDistance = distanceGrid
+          .get(a.x, a.y)
+          .compareTo(distanceGrid.get(b.x, b.y));
 
       if (compareDistance != 0) {
         return compareDistance;
@@ -63,8 +66,7 @@ int solve(Grid riskLevelGrid) {
         }
       }
     }
-  })
-    ..add(const Point(0, 0)); // Add the first point to visit
+  })..add(const Point(0, 0)); // Add the first point to visit
 
   // Much cheaper to keep count of unvisited point by using a variable
   var numberOfUnvisitedPoints = distanceGrid.list.length;

@@ -66,9 +66,13 @@ int solveB(Iterable<String> input) {
       }
     }
 
-    scores.add(stack.reversed
-        .map((closingCharacter) => pointsForClosingCharacter[closingCharacter]!)
-        .fold(0, (score, points) => (score * 5) + points));
+    scores.add(
+      stack.reversed
+          .map(
+            (closingCharacter) => pointsForClosingCharacter[closingCharacter]!,
+          )
+          .fold(0, (score, points) => (score * 5) + points),
+    );
   }
 
   // "The winner is found by sorting all of the scores and then taking the

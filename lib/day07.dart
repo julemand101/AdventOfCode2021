@@ -16,14 +16,16 @@ int solve(Iterable<String> input, {required FuelCalculator getFuelUsage}) {
 
   return Iterable<int>.generate(maxNumber).fold(
     0,
-    (minimumFuel, candidate) => minimumFuel != 0
-        ? min(minimumFuel, calculateFuel(numbers, candidate, getFuelUsage))
-        : calculateFuel(numbers, candidate, getFuelUsage),
+    (minimumFuel, candidate) =>
+        minimumFuel != 0
+            ? min(minimumFuel, calculateFuel(numbers, candidate, getFuelUsage))
+            : calculateFuel(numbers, candidate, getFuelUsage),
   );
 }
 
 int calculateFuel(List<int> list, int target, FuelCalculator getFuelUsage) =>
     list.fold(
-        0,
-        (sumFuel, currentPosition) =>
-            sumFuel + getFuelUsage((currentPosition - target).abs()));
+      0,
+      (sumFuel, currentPosition) =>
+          sumFuel + getFuelUsage((currentPosition - target).abs()),
+    );

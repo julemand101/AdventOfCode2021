@@ -24,8 +24,11 @@ int solve(List<String> input, {required bool partA}) {
 
 class BingoBoard {
   final List<Set<int>> rows = <Set<int>>[];
-  final List<Set<int>> columns =
-      List.generate(5, (_) => <int>{}, growable: false);
+  final List<Set<int>> columns = List.generate(
+    5,
+    (_) => <int>{},
+    growable: false,
+  );
   bool foundBingo = false;
 
   BingoBoard(Iterable<String> input) {

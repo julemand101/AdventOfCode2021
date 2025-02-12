@@ -74,9 +74,8 @@ class BitsTransmission {
   final Uint8List bitList;
 
   BitsTransmission(String input)
-      : bitList = Uint8List(input.length * 4)
-          ..setAll(
-              0, input.codeUnits.expand((char) => _hexLetterToBits[char]!));
+    : bitList = Uint8List(input.length * 4)
+        ..setAll(0, input.codeUnits.expand((char) => _hexLetterToBits[char]!));
 
   Uint8List readBits(int nBits) => bitList.sublist(counter, counter += nBits);
   int readBitsAsInt(int nBits) => convertBitsToInt(readBits(nBits));

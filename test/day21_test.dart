@@ -8,19 +8,13 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-        solveA(
-          player1StartingPosition: 4,
-          player2StartingPosition: 8,
-        ),
+        solveA(player1StartingPosition: 4, player2StartingPosition: 8),
         equals(739785),
       );
     });
     test('Solution', () {
       expect(
-        solveA(
-          player1StartingPosition: 7,
-          player2StartingPosition: 5,
-        ),
+        solveA(player1StartingPosition: 7, player2StartingPosition: 5),
         equals(798147),
       );
     });
@@ -28,19 +22,13 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-        solveB(
-          player1StartingPosition: 4,
-          player2StartingPosition: 8,
-        ),
+        solveB(player1StartingPosition: 4, player2StartingPosition: 8),
         equals(444356092776315),
       );
     });
     test('Solution', () {
       expect(
-        solveB(
-          player1StartingPosition: 7,
-          player2StartingPosition: 5,
-        ),
+        solveB(player1StartingPosition: 7, player2StartingPosition: 5),
         equals(809953813657517),
       );
     });

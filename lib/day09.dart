@@ -31,7 +31,7 @@ int solveB(List<String> input) {
   final basinSizes = <int>[
     for (var y = 0; y < grid.ySize; y++)
       for (var x = 0; x < grid.xSize; x++)
-        if (grid.get(x, y) != 9) grid.removeBasinAndGetSize(x, y)
+        if (grid.get(x, y) != 9) grid.removeBasinAndGetSize(x, y),
   ]..sort();
 
   return basinSizes.reversed.take(3).reduce((a, b) => a * b);

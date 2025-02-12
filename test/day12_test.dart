@@ -30,56 +30,59 @@ void main() {
   group('Part One', () {
     test('Example 1', () {
       expect(
-          solveA(const [
-            'start-A',
-            'start-b',
-            'A-c',
-            'A-b',
-            'b-d',
-            'A-end',
-            'b-end',
-          ]),
-          equals(10));
+        solveA(const [
+          'start-A',
+          'start-b',
+          'A-c',
+          'A-b',
+          'b-d',
+          'A-end',
+          'b-end',
+        ]),
+        equals(10),
+      );
     });
     test('Example 2', () {
       expect(
-          solveA(const [
-            'dc-end',
-            'HN-start',
-            'start-kj',
-            'dc-start',
-            'dc-HN',
-            'LN-dc',
-            'HN-end',
-            'kj-sa',
-            'kj-HN',
-            'kj-dc',
-          ]),
-          equals(19));
+        solveA(const [
+          'dc-end',
+          'HN-start',
+          'start-kj',
+          'dc-start',
+          'dc-HN',
+          'LN-dc',
+          'HN-end',
+          'kj-sa',
+          'kj-HN',
+          'kj-dc',
+        ]),
+        equals(19),
+      );
     });
     test('Example 3', () {
       expect(
-          solveA(const [
-            'fs-end',
-            'he-DX',
-            'fs-he',
-            'start-DX',
-            'pj-DX',
-            'end-zg',
-            'zg-sl',
-            'zg-pj',
-            'pj-he',
-            'RW-he',
-            'fs-DX',
-            'pj-RW',
-            'zg-RW',
-            'start-pj',
-            'he-WI',
-            'zg-he',
-            'pj-fs',
-            'start-RW',
-          ]),
-          equals(226));
+        solveA(const [
+          'fs-end',
+          'he-DX',
+          'fs-he',
+          'start-DX',
+          'pj-DX',
+          'end-zg',
+          'zg-sl',
+          'zg-pj',
+          'pj-he',
+          'RW-he',
+          'fs-DX',
+          'pj-RW',
+          'zg-RW',
+          'start-pj',
+          'he-WI',
+          'zg-he',
+          'pj-fs',
+          'start-RW',
+        ]),
+        equals(226),
+      );
     });
     test('Solution', () {
       expect(solveA(input), equals(3708));
@@ -88,56 +91,59 @@ void main() {
   group('Part Two', () {
     test('Example 1', () {
       expect(
-          solveB(const [
-            'start-A',
-            'start-b',
-            'A-c',
-            'A-b',
-            'b-d',
-            'A-end',
-            'b-end',
-          ]),
-          equals(36));
+        solveB(const [
+          'start-A',
+          'start-b',
+          'A-c',
+          'A-b',
+          'b-d',
+          'A-end',
+          'b-end',
+        ]),
+        equals(36),
+      );
     });
     test('Example 2', () {
       expect(
-          solveB(const [
-            'dc-end',
-            'HN-start',
-            'start-kj',
-            'dc-start',
-            'dc-HN',
-            'LN-dc',
-            'HN-end',
-            'kj-sa',
-            'kj-HN',
-            'kj-dc',
-          ]),
-          equals(103));
+        solveB(const [
+          'dc-end',
+          'HN-start',
+          'start-kj',
+          'dc-start',
+          'dc-HN',
+          'LN-dc',
+          'HN-end',
+          'kj-sa',
+          'kj-HN',
+          'kj-dc',
+        ]),
+        equals(103),
+      );
     });
     test('Example 3', () {
       expect(
-          solveB(const [
-            'fs-end',
-            'he-DX',
-            'fs-he',
-            'start-DX',
-            'pj-DX',
-            'end-zg',
-            'zg-sl',
-            'zg-pj',
-            'pj-he',
-            'RW-he',
-            'fs-DX',
-            'pj-RW',
-            'zg-RW',
-            'start-pj',
-            'he-WI',
-            'zg-he',
-            'pj-fs',
-            'start-RW',
-          ]),
-          equals(3509));
+        solveB(const [
+          'fs-end',
+          'he-DX',
+          'fs-he',
+          'start-DX',
+          'pj-DX',
+          'end-zg',
+          'zg-sl',
+          'zg-pj',
+          'pj-he',
+          'RW-he',
+          'fs-DX',
+          'pj-RW',
+          'zg-RW',
+          'start-pj',
+          'he-WI',
+          'zg-he',
+          'pj-fs',
+          'start-RW',
+        ]),
+        equals(3509),
+      );
     });
     test('Solution', () {
       expect(solveB(input), equals(93858));

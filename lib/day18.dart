@@ -12,8 +12,10 @@ int solveB(List<String> input) {
   for (final a in input) {
     for (final b in input) {
       if (!identical(a, b)) {
-        maxMagnitude = max(maxMagnitude,
-            (SnailfishNumber.parse(a) + SnailfishNumber.parse(b)).magnitude);
+        maxMagnitude = max(
+          maxMagnitude,
+          (SnailfishNumber.parse(a) + SnailfishNumber.parse(b)).magnitude,
+        );
       }
     }
   }

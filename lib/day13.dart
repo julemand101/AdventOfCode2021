@@ -23,16 +23,22 @@ int solveA(List<String> input) {
 
       points
         ..removeAll(pointsToMove)
-        ..addAll(pointsToMove
-            .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
+        ..addAll(
+          pointsToMove.map(
+            (point) => Point(point.x - (point.x - value) * 2, point.y),
+          ),
+        );
     case ['fold along y', final valueString]:
       final value = int.parse(valueString);
       final pointsToMove = points.where((point) => point.y > value).toList();
 
       points
         ..removeAll(pointsToMove)
-        ..addAll(pointsToMove
-            .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
+        ..addAll(
+          pointsToMove.map(
+            (point) => Point(point.x, point.y - (point.y - value) * 2),
+          ),
+        );
     case [final command, ...]:
       throw Exception('Invalid command: $command');
   }
@@ -57,16 +63,22 @@ String solveB(List<String> input) {
 
         points
           ..removeAll(pointsToMove)
-          ..addAll(pointsToMove
-              .map((point) => Point(point.x - (point.x - value) * 2, point.y)));
+          ..addAll(
+            pointsToMove.map(
+              (point) => Point(point.x - (point.x - value) * 2, point.y),
+            ),
+          );
       case ['fold along y', final valueString]:
         final value = int.parse(valueString);
         final pointsToMove = points.where((point) => point.y > value).toList();
 
         points
           ..removeAll(pointsToMove)
-          ..addAll(pointsToMove
-              .map((point) => Point(point.x, point.y - (point.y - value) * 2)));
+          ..addAll(
+            pointsToMove.map(
+              (point) => Point(point.x, point.y - (point.y - value) * 2),
+            ),
+          );
       case [final command, ...]:
         throw Exception('Invalid command: $command');
     }

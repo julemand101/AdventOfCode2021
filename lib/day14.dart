@@ -55,9 +55,9 @@ class LetterPair {
   // CH -> B
   // 0123456 <- index position in line
   LetterPair(String line)
-      : firstPair = line[0] + line[6],
-        secondPair = line[6] + line[1],
-        insertedLetter = line[6];
+    : firstPair = line[0] + line[6],
+      secondPair = line[6] + line[1],
+      insertedLetter = line[6];
 }
 
 extension StringExtension on String {

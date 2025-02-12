@@ -1,10 +1,11 @@
 // --- Day 8: Seven Segment Search ---
 // https://adventofcode.com/2021/day/8
 
-int solveA(Iterable<String> input) => input
-    .expand((line) => line.split(' | ').last.split(' '))
-    .where((part) => part.length != 5 && part.length != 6)
-    .length;
+int solveA(Iterable<String> input) =>
+    input
+        .expand((line) => line.split(' | ').last.split(' '))
+        .where((part) => part.length != 5 && part.length != 6)
+        .length;
 
 int solveB(Iterable<String> input) {
   var sum = 0;
@@ -34,8 +35,10 @@ int solveB(Iterable<String> input) {
     //  3333
     //
     // When starting, all letters is a valid candidate for each display segment
-    final displaySegmentCandidates =
-        List.generate(7, (_) => {'a', 'b', 'c', 'd', 'e', 'f', 'g'});
+    final displaySegmentCandidates = List.generate(
+      7,
+      (_) => {'a', 'b', 'c', 'd', 'e', 'f', 'g'},
+    );
 
     // Go though numbers using 2, 4, or 3 segments and use this information to
     // remove segments from the parts which is not used. E.g. if we know the
@@ -70,19 +73,22 @@ int solveB(Iterable<String> input) {
     //
     // There should only be one valid mapping and we use it as soon as we find
     // it.
-    final validMapping = generateMappings(displaySegmentCandidates, map: {})
-        .where(
-          (displayMapping) => randomNumbers.every(
-            (randomNumber) =>
-                getNumberFromMapping(displayMapping, randomNumber) != -1,
-          ),
-        )
-        .first;
+    final validMapping =
+        generateMappings(displaySegmentCandidates, map: {})
+            .where(
+              (displayMapping) => randomNumbers.every(
+                (randomNumber) =>
+                    getNumberFromMapping(displayMapping, randomNumber) != -1,
+              ),
+            )
+            .first;
 
     // Use the found valid mapping to generate each digit of a number
-    sum += int.parse(outputNumbers
-        .map((segments) => getNumberFromMapping(validMapping, segments))
-        .join());
+    sum += int.parse(
+      outputNumbers
+          .map((segments) => getNumberFromMapping(validMapping, segments))
+          .join(),
+    );
   }
 
   return sum;
@@ -124,8 +130,18 @@ int getNumberFromMapping(Map<String, int> displayMapping, List<String> parts) {
   // Mapping of turned on segments in display and what number it represents:
   // Index 0 = Number 0, Index 1 = Number 1, ... Index 9 = Number 9
   // https://en.wikipedia.org/wiki/Seven-segment_display#Hexadecimal
-  return [0x7E, 0x30, 0x6D, 0x79, 0x33, 0x5B, 0x5F, 0x70, 0x7F, 0x7B]
-      .indexOf(boolListToInt(display)); // -1 returned if no number found
+  return [
+    0x7E,
+    0x30,
+    0x6D,
+    0x79,
+    0x33,
+    0x5B,
+    0x5F,
+    0x70,
+    0x7F,
+    0x7B,
+  ].indexOf(boolListToInt(display)); // -1 returned if no number found
 }
 
 // Convert a iterable of booleans, representing bits, to an integer
