@@ -49,9 +49,12 @@ int solveA(List<String> input) {
 String solveB(List<String> input) {
   final points = <Point<int>>{};
 
-  for (final [x, y] in input
-      .takeWhile((line) => line.isNotEmpty)
-      .map((line) => line.split(',').map(int.parse).toList(growable: false))) {
+  for (final [x, y]
+      in input
+          .takeWhile((line) => line.isNotEmpty)
+          .map(
+            (line) => line.split(',').map(int.parse).toList(growable: false),
+          )) {
     points.add(Point(x, y));
   }
 

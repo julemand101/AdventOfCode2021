@@ -29,10 +29,9 @@ Grid parseInputToGrid(List<String> input) =>
       ..setAll(input.expand((line) => line.split('').map(int.parse)));
 
 int solve(Grid riskLevelGrid) {
-  final distanceGrid =
-      Grid.uInt16List(riskLevelGrid.xSize, riskLevelGrid.ySize)
-        ..setAllValue(-1) // Since we have unsigned numbers = set to max
-        ..set(0, 0, 0);
+  final distanceGrid = Grid.uInt16List(riskLevelGrid.xSize, riskLevelGrid.ySize)
+    ..setAllValue(-1) // Since we have unsigned numbers = set to max
+    ..set(0, 0, 0);
 
   // Use of sorted SplayTreeSet of points we should consider to visit. The set
   // does not contains points where we have yet to give it a distance since that

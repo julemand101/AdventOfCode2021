@@ -44,8 +44,8 @@ int solve(Iterable<String> input, {required bool partB}) {
       // or a diagonal line at exactly 45 degrees.
       final slopePoint =
           (fromPoint.y - targetPoint.y) ~/ (fromPoint.x - targetPoint.x) == 1
-              ? const Point(1, 1)
-              : const Point(1, -1);
+          ? const Point(1, 1)
+          : const Point(1, -1);
 
       for (var point = fromPoint; point != targetPoint; point += slopePoint) {
         oceanFloor.incrementLineOverlap(point);

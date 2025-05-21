@@ -1,11 +1,10 @@
 // --- Day 8: Seven Segment Search ---
 // https://adventofcode.com/2021/day/8
 
-int solveA(Iterable<String> input) =>
-    input
-        .expand((line) => line.split(' | ').last.split(' '))
-        .where((part) => part.length != 5 && part.length != 6)
-        .length;
+int solveA(Iterable<String> input) => input
+    .expand((line) => line.split(' | ').last.split(' '))
+    .where((part) => part.length != 5 && part.length != 6)
+    .length;
 
 int solveB(Iterable<String> input) {
   var sum = 0;
@@ -73,15 +72,14 @@ int solveB(Iterable<String> input) {
     //
     // There should only be one valid mapping and we use it as soon as we find
     // it.
-    final validMapping =
-        generateMappings(displaySegmentCandidates, map: {})
-            .where(
-              (displayMapping) => randomNumbers.every(
-                (randomNumber) =>
-                    getNumberFromMapping(displayMapping, randomNumber) != -1,
-              ),
-            )
-            .first;
+    final validMapping = generateMappings(displaySegmentCandidates, map: {})
+        .where(
+          (displayMapping) => randomNumbers.every(
+            (randomNumber) =>
+                getNumberFromMapping(displayMapping, randomNumber) != -1,
+          ),
+        )
+        .first;
 
     // Use the found valid mapping to generate each digit of a number
     sum += int.parse(

@@ -28,9 +28,10 @@ int solveB(Iterable<String> input) {
 
   final routes = <String>{};
 
-  for (final smallCave in nodeMap.values
-      .where((node) => node.isSmallCave)
-      .where((node) => node.name != 'start' && node.name != 'end')) {
+  for (final smallCave
+      in nodeMap.values
+          .where((node) => node.isSmallCave)
+          .where((node) => node.name != 'start' && node.name != 'end')) {
     smallCave.allowSecondVisit = true;
     routes.addAll(nodeMap['start']!.getPathsToEnd([], {}));
     smallCave.allowSecondVisit = false;

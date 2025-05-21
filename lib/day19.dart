@@ -13,13 +13,12 @@ class Point3d {
     return Point3d(x, y, z);
   }
 
-  double distance(Point3d otherPoint) =>
-      pow(
-        pow(otherPoint.x - x, 2) +
-            pow(otherPoint.y - y, 2) +
-            pow(otherPoint.z - z, 2),
-        0.5,
-      ).toDouble();
+  double distance(Point3d otherPoint) => pow(
+    pow(otherPoint.x - x, 2) +
+        pow(otherPoint.y - y, 2) +
+        pow(otherPoint.z - z, 2),
+    0.5,
+  ).toDouble();
 
   int manhattanDistance(Point3d otherPoint) =>
       (x - otherPoint.x).abs() +
@@ -46,10 +45,9 @@ class Point3d {
       yield currentPoint;
 
       for (var turnIndex = 0; turnIndex < 3; turnIndex++) {
-        currentPoint =
-            rollIndex % 2 == 0
-                ? currentPoint.turnClockWise()
-                : currentPoint.turnCounterClockWise();
+        currentPoint = rollIndex % 2 == 0
+            ? currentPoint.turnClockWise()
+            : currentPoint.turnCounterClockWise();
         yield (currentPoint);
       }
     }
@@ -176,11 +174,10 @@ Result solve(Iterable<String> input) {
             overlappingPointInResultScanner.z - e.points[s2Index].z,
           ),
         )) {
-          final overlappingPointsCount =
-              movedScanner.points
-                  .toSet()
-                  .intersection(resultScannerPointsSet)
-                  .length;
+          final overlappingPointsCount = movedScanner.points
+              .toSet()
+              .intersection(resultScannerPointsSet)
+              .length;
 
           if (overlappingPointsCount > 1) {
             resultScanner = Scanner(
